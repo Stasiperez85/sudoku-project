@@ -55,7 +55,7 @@ const solve = () => {
         url: 'https://solve-sudoku.p.rapidapi.com/',
         headers: {
             'content-type': 'application/json',
-            'X-RapidAPI-Key': 'ec4df9eb82msh499ecb287b9136ap1f22cajsn0a22cab9e50f',
+            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
             'X-RapidAPI-Host': 'solve-sudoku.p.rapidapi.com'
         },
         data: '{"puzzle":"2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3"}'
