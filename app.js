@@ -1,8 +1,10 @@
+const { response } = require("express")
+
 const puzzleBoard = document.querySelector('#puzzle')
 const solveButton = document.querySelector('#solve-button')
 const solutionDisplay = document.querySelector('#solution')
 const suqares = 81
-const submission = []
+let submission = []
 
 for (let i = 0; i < suqares; i++) {
     const inputElement = document.createElement('input')
@@ -48,25 +50,26 @@ const populateValues = (isSolvable, solution) => {
 
 const solve = () => {
     joinValues()
-    const data = submission.join('')
+    const data = { numbers: submission.join('') }
     console.log('data', data)
-    const options = {
-        method: 'POST',
-        url: 'https://solve-sudoku.p.rapidapi.com/',
-        headers: {
-            'content-type': 'application/json',
-            'X-RapidAPI-Key': process.env.RAPID_API_KEY,
-            'X-RapidAPI-Host': 'solve-sudoku.p.rapidapi.com'
-        },
-        data: '{"puzzle":"2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3"}'
-    };
 
-    axios.request(options).then(function (response) {
-        console.log(response.data);
-        populateValues(response.data.solvable.response.data.solution)
-    }).catch(function (error) {
-        console.error(error);
-    });
+    fetch('http//localhost:8000/solve', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'apllication/json',
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }).then(response => response.json()
+        .then(data => {
+            console.log(data)
+            populateValues(data.solvalbe, data.solution)
+            submission = []
+        })
+        .catch((error) => {
+            console.error('Error:', error)
+        })
 }
+
 
 solveButton.addEventListener('click', solve)
